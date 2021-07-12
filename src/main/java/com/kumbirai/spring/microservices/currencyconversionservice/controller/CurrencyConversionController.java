@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
@@ -32,8 +33,8 @@ import java.util.Objects;
  *
  * <b>Revision:</b>
  * <br>
- * @date 30 May 2021<br>
  */
+@RestController
 public class CurrencyConversionController
 {
     private static final Logger LOGGER = LogManager.getLogger(CurrencyConversionController.class.getName());
@@ -63,7 +64,7 @@ public class CurrencyConversionController
 
         Objects.requireNonNull(currencyConversion, "Currency Conversion is null");
 
-        return new CurrencyConversion(currencyConversion.getId(), from, to, quantity, currencyConversion.getConversionMultiple(), quantity.multiply(currencyConversion.getConversionMultiple()), currencyConversion.getEnvironment() + ": " + "rest template");
+        return new CurrencyConversion(currencyConversion.getId(), from, to, quantity, currencyConversion.getConversionMultiple(), quantity.multiply(currencyConversion.getConversionMultiple()), String.format("(%s) RestTemplate", currencyConversion.getEnvironment()));
     }
 
     @GetMapping("/currency-conversion-feign/from/{from}/to/{to}/quantity/{quantity}")
@@ -71,6 +72,6 @@ public class CurrencyConversionController
     {
         var currencyConversion = proxy.retrieveExchangeValue(from, to);
 
-        return new CurrencyConversion(currencyConversion.getId(), from, to, quantity, currencyConversion.getConversionMultiple(), quantity.multiply(currencyConversion.getConversionMultiple()), currencyConversion.getEnvironment() + ": " + "feign");
+        return new CurrencyConversion(currencyConversion.getId(), from, to, quantity, currencyConversion.getConversionMultiple(), quantity.multiply(currencyConversion.getConversionMultiple()), String.format("(%s) feign", currencyConversion.getEnvironment()));
     }
 }

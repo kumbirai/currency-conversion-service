@@ -22,12 +22,11 @@ import org.springframework.web.bind.annotation.PathVariable;
  *
  * <b>Revision:</b>
  * <br>
- * @date 30 May 2021<br>
  */
 // @FeignClient(name="currency-exchange", url="localhost:8000")
 @FeignClient(name = "currency-exchange")
 public interface CurrencyExchangeProxy
 {
     @GetMapping("/currency-exchange/from/{from}/to/{to}")
-    public CurrencyConversion retrieveExchangeValue(@PathVariable String from, @PathVariable String to);
+    CurrencyConversion retrieveExchangeValue(@PathVariable String from, @PathVariable String to);
 }
